@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sara-thermal-reading"
+version = "0.1.0"
+description = "Sara Thermal Reading"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dotenv",
+    "Pillow",
+    "numpy",
+    "azure-identity",
+    "azure-keyvault-secrets",
+    "azure-storage-blob",
+    "pydantic",
+    "loguru",
+    "pathlib",
+    "opencv-python",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "black",
+    "isort",
+    "flake8"
+]
+
+[tool.setuptools.packages.find]
+include = ["sara_thermal_reading*"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "."
+]
+testpaths = [
+    "tests",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+no_warn_return_any = true
+warn_unused_ignores = false
+strict_optional = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.isort]
+profile = "black"
