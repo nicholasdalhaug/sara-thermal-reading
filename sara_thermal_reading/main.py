@@ -7,13 +7,13 @@ import numpy as np
 from azure.storage.blob import BlobServiceClient
 from numpy.typing import NDArray
 
-from sara_thermal_reading.blob import BlobStorageLocation
+from sara_thermal_reading.file_io.blob import BlobStorageLocation
 from sara_thermal_reading.logger import setup_logger
 
 setup_logger()
 from loguru import logger
 
-from sara_thermal_reading.file_utils import (
+from sara_thermal_reading.file_io.file_utils import (
     REFERENCE_STORAGE_ACCOUNT,
     REFERENCE_STORAGE_CONNECTION_STRING,
     download_anonymized_image,

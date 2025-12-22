@@ -3,7 +3,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .fff_loader import load_fff_from_bytes
+from .file_io.fff_loader import load_fff_from_bytes
 
 
 def plot_thermal_image(image: np.ndarray, title: str) -> None:

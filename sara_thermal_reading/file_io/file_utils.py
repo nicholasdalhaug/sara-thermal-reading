@@ -8,7 +8,7 @@ from loguru import logger
 from numpy.typing import NDArray
 from PIL import Image
 
-from sara_thermal_reading.blob import (
+from .blob import (
     BlobStorageLocation,
     download_blob_to_image,
     download_blob_to_json,
