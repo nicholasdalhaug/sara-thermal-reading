@@ -7,6 +7,7 @@ import numpy as np
 from azure.storage.blob import BlobServiceClient
 from numpy.typing import NDArray
 
+from sara_thermal_reading.config.settings import settings
 from sara_thermal_reading.file_io.blob import BlobStorageLocation
 from sara_thermal_reading.logger import setup_logger
 
@@ -14,8 +15,6 @@ setup_logger()
 from loguru import logger
 
 from sara_thermal_reading.file_io.file_utils import (
-    REFERENCE_STORAGE_ACCOUNT,
-    REFERENCE_STORAGE_CONNECTION_STRING,
     download_anonymized_image,
     load_reference_image_and_polygon,
     upload_to_visualized,
@@ -30,7 +29,7 @@ def check_reference_blob_exists(
     )
 
     ref_blob_service_client = BlobServiceClient.from_connection_string(
-        REFERENCE_STORAGE_CONNECTION_STRING
+        settings.REFERENCE_STORAGE_CONNECTION_STRING
     )
     img_path = f"{tag_id}_{inspection_description}/reference_image.jpeg"
     blob_client = ref_blob_service_client.get_blob_client(
@@ -455,7 +454,7 @@ def main() -> None:
         tag_id, inspection_description, installation_code
     ):
         logger.error(
-            f"Expecting reference image to exist on storage account {REFERENCE_STORAGE_ACCOUNT} for tagId {tag_id} and inspectionDescription {inspection_description} on installationCode {installation_code}"
+            f"Expecting reference image to exist on storage account {settings.REFERENCE_STORAGE_ACCOUNT} for tagId {tag_id} and inspectionDescription {inspection_description} on installationCode {installation_code}"
         )
         return
 

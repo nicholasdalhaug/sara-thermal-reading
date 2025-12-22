@@ -3,10 +3,11 @@ import os
 
 import numpy as np
 from azure.storage.blob import BlobServiceClient
-from dotenv import load_dotenv
 from loguru import logger
 from numpy.typing import NDArray
 from PIL import Image
+
+from sara_thermal_reading.config.settings import settings
 
 from .blob import (
     BlobStorageLocation,
@@ -15,36 +16,13 @@ from .blob import (
     upload_image_to_blob,
 )
 
-load_dotenv()
-
-
-def get_env_var_or_raise_error(var_name: str) -> str:
-    value = os.getenv(var_name)
-    if value is None:
-        raise EnvironmentError(f"Environment variable '{var_name}' is not set")
-    return value
-
-
-SOURCE_STORAGE_ACCOUNT = get_env_var_or_raise_error("SOURCE_STORAGE_ACCOUNT")
-SOURCE_STORAGE_CONNECTION_STRING = get_env_var_or_raise_error(
-    "SOURCE_STORAGE_CONNECTION_STRING"
-)
-DESTINATION_STORAGE_ACCOUNT = get_env_var_or_raise_error("DESTINATION_STORAGE_ACCOUNT")
-DESTINATION_STORAGE_CONNECTION_STRING = get_env_var_or_raise_error(
-    "DESTINATION_STORAGE_CONNECTION_STRING"
-)
-REFERENCE_STORAGE_ACCOUNT = get_env_var_or_raise_error("REFERENCE_STORAGE_ACCOUNT")
-REFERENCE_STORAGE_CONNECTION_STRING = get_env_var_or_raise_error(
-    "REFERENCE_STORAGE_CONNECTION_STRING"
-)
-
 
 def download_anonymized_image(
     anonymized_blob_storage_location: BlobStorageLocation,
 ) -> NDArray[np.uint8]:
     logger.info(f"Processing new thermal image")
     src_blob_service_client = BlobServiceClient.from_connection_string(
-        SOURCE_STORAGE_CONNECTION_STRING
+        settings.SOURCE_STORAGE_CONNECTION_STRING
     )
 
     anonymized_image_array: NDArray[np.uint8] = download_blob_to_image(
@@ -68,7 +46,7 @@ def upload_to_visualized(
 ) -> None:
     logger.info(f"Uploading annotated thermal image to visualized storage account")
     vis_blob_service_client = BlobServiceClient.from_connection_string(
-        DESTINATION_STORAGE_CONNECTION_STRING
+        settings.DESTINATION_STORAGE_CONNECTION_STRING
     )
 
     upload_image_to_blob(
@@ -84,7 +62,7 @@ def load_reference_image_and_polygon(
 ) -> tuple[NDArray[np.uint8], list[tuple[int, int]]]:
     try:
         ref_blob_service_client = BlobServiceClient.from_connection_string(
-            REFERENCE_STORAGE_CONNECTION_STRING
+            settings.REFERENCE_STORAGE_CONNECTION_STRING
         )
         img_path = f"{tag_id}_{inspection_description}/reference_image.jpeg"
         image_array = download_blob_to_image(

@@ -16,6 +16,7 @@ dependencies = [
     "azure-keyvault-secrets",
     "azure-storage-blob",
     "pydantic",
+    "pydantic-settings",
     "loguru",
     "pathlib",
     "opencv-python",
