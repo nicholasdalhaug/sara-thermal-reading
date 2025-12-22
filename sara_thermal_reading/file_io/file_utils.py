@@ -82,3 +82,28 @@ def load_reference_image_and_polygon(
         logger.error(f"Error loading reference image and polygon: {e}")
         raise
     return image_array, polygon
+
+
+def check_reference_blob_exists(
+    tag_id: str, inspection_description: str, installation_code: str
+) -> bool:
+    logger.info(
+        f"Checking if reference blob exists for tag_id: {tag_id}, inspection_description: {inspection_description}, installation_code: {installation_code}"
+    )
+
+    ref_blob_service_client = BlobServiceClient.from_connection_string(
+        settings.REFERENCE_STORAGE_CONNECTION_STRING
+    )
+    img_path = f"{tag_id}_{inspection_description}/reference_image.jpeg"
+    blob_client = ref_blob_service_client.get_blob_client(
+        container=installation_code,
+        blob=img_path,
+    )
+
+    exists = blob_client.exists()
+    if exists:
+        logger.info(f"Reference blob found at path: {img_path}")
+    else:
+        logger.warning(f"Reference blob not found at path: {img_path}")
+
+    return exists
