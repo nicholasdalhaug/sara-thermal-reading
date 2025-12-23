@@ -1,5 +1,4 @@
 import json
-import os
 
 import numpy as np
 from azure.storage.blob import BlobServiceClient
@@ -37,6 +36,14 @@ def download_anonymized_image(
     return anonymized_image_array
 
 
+def download_fff_image(
+    blob_service_client: BlobServiceClient, blob_storage_location: BlobStorageLocation
+) -> NDArray[np.float64]:
+    blob_bytes = download_blob_to_bytes(blob_service_client, blob_storage_location)
+    thermal_image_array = load_fff_from_bytes(blob_bytes)
+    return thermal_image_array
+
+
 def download_anonymized_fff_image(
     anonymized_blob_storage_location: BlobStorageLocation,
 ) -> NDArray[np.float64]:
@@ -46,11 +53,9 @@ def download_anonymized_fff_image(
         settings.SOURCE_STORAGE_CONNECTION_STRING
     )
 
-    blob_bytes = download_blob_to_bytes(
+    thermal_image_array = download_fff_image(
         src_blob_service_client, anonymized_blob_storage_location
     )
-
-    thermal_image_array = load_fff_from_bytes(blob_bytes)
 
     logger.info(
         f"Downloaded FFF image from source storage account, shape: {thermal_image_array.shape}"
@@ -81,6 +86,28 @@ def upload_to_visualized(
     )
 
 
+def load_reference_polygon(
+    installation_code: str, tag_id: str, inspection_description: str
+) -> list[tuple[int, int]]:
+    try:
+        ref_blob_service_client = BlobServiceClient.from_connection_string(
+            settings.REFERENCE_STORAGE_CONNECTION_STRING
+        )
+        polygon_path = f"{tag_id}_{inspection_description}/reference_polygon.json"
+        polygon_json = download_blob_to_json(
+            ref_blob_service_client,
+            BlobStorageLocation(blobContainer=installation_code, blobName=polygon_path),
+        )
+        polygon = json.loads(polygon_json)
+        return polygon
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to decode polygon JSON: {e}")
+        raise
+    except Exception as e:
+        logger.error(f"Error loading reference polygon: {e}")
+        raise
+
+
 def load_reference_image_and_polygon(
     installation_code: str, tag_id: str, inspection_description: str
 ) -> tuple[NDArray[np.uint8], list[tuple[int, int]]]:
@@ -95,17 +122,37 @@ def load_reference_image_and_polygon(
             ref_blob_service_client,
             BlobStorageLocation(blobContainer=installation_code, blobName=img_path),
         )
-        polygon_path = f"{tag_id}_{inspection_description}/reference_polygon.json"
-        polygon_json = download_blob_to_json(
-            ref_blob_service_client,
-            BlobStorageLocation(blobContainer=installation_code, blobName=polygon_path),
+        polygon = load_reference_polygon(
+            installation_code, tag_id, inspection_description
         )
-        polygon = json.loads(polygon_json)
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to decode polygon JSON: {e}")
-        raise
     except Exception as e:
         logger.error(f"Error loading reference image and polygon: {e}")
+        raise
+    return image_array, polygon
+
+
+def load_reference_fff_image_and_polygon(
+    installation_code: str, tag_id: str, inspection_description: str
+) -> tuple[NDArray[np.float64], list[tuple[int, int]]]:
+    try:
+        ref_blob_service_client = BlobServiceClient.from_connection_string(
+            settings.REFERENCE_STORAGE_CONNECTION_STRING
+        )
+
+        img_path = (
+            f"{tag_id}_{inspection_description}/{settings.REFERENCE_IMAGE_FILENAME}"
+        )
+
+        image_array = download_fff_image(
+            ref_blob_service_client,
+            BlobStorageLocation(blobContainer=installation_code, blobName=img_path),
+        )
+
+        polygon = load_reference_polygon(
+            installation_code, tag_id, inspection_description
+        )
+    except Exception as e:
+        logger.error(f"Error loading reference FFF image and polygon: {e}")
         raise
     return image_array, polygon
 
