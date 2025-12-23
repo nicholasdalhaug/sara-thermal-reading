@@ -14,11 +14,11 @@ from sara_thermal_reading.file_io.file_utils import (
     load_reference_image_and_polygon,
     upload_to_visualized,
 )
-from sara_thermal_reading.find_max_temperature_in_polygon import (
-    find_max_temperature_in_polygon,
-)
 from sara_thermal_reading.image_alignment.align_two_images_orb_bf_cv2 import (
     align_two_images_orb_bf_cv2,
+)
+from sara_thermal_reading.image_processing.find_max_temperature_in_polygon import (
+    find_max_temperature_in_polygon,
 )
 from sara_thermal_reading.visualization.create_annotated_thermal_visualization import (
     create_annotated_thermal_visualization,
