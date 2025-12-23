@@ -11,10 +11,12 @@ from sara_thermal_reading.config.settings import settings
 
 from .blob import (
     BlobStorageLocation,
+    download_blob_to_bytes,
     download_blob_to_image,
     download_blob_to_json,
     upload_image_to_blob,
 )
+from .fff_loader import load_fff_from_bytes
 
 
 def download_anonymized_image(
@@ -33,6 +35,28 @@ def download_anonymized_image(
     )
 
     return anonymized_image_array
+
+
+def download_anonymized_fff_image(
+    anonymized_blob_storage_location: BlobStorageLocation,
+) -> NDArray[np.float64]:
+    logger.info(f"Processing new thermal FFF image")
+
+    src_blob_service_client = BlobServiceClient.from_connection_string(
+        settings.SOURCE_STORAGE_CONNECTION_STRING
+    )
+
+    blob_bytes = download_blob_to_bytes(
+        src_blob_service_client, anonymized_blob_storage_location
+    )
+
+    thermal_image_array = load_fff_from_bytes(blob_bytes)
+
+    logger.info(
+        f"Downloaded FFF image from source storage account, shape: {thermal_image_array.shape}"
+    )
+
+    return thermal_image_array
 
 
 def load_image_as_array(path: str) -> np.ndarray:
