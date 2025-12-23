@@ -40,3 +40,24 @@ REFERENCE_STORAGE_ACCOUNT=thermalreadingrefdev
 REFERENCE_STORAGE_CONNECTION_STRING=ht ...
 
 ```
+
+
+## Dev utils
+
+### Create reference polygon
+
+Draw polygon directly on image
+
+```bash
+python utils_cli.py create-polygon path/to/image.fff
+```
+
+Will by default save to `reference_polygon.json` in the current directory
+
+### Plot reference polygon
+
+```bash
+python utils_cli.py plot-fff path/to/image.fff --polygon-json-path path/to/reference_polygon.json
+```
+
+
