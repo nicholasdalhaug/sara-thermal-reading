@@ -42,4 +42,4 @@ jobs:
 
       - name: Run mypy
         run: |
-          mypy sara_thermal_reading
+          mypy sara_thermal_reading utils_cli.py main.py
