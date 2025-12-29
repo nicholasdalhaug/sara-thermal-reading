@@ -84,6 +84,9 @@ def run_thermal_reading_fff_workflow(
     installation_code: str,
     temperature_output_file: str,
 ) -> None:
+
+    logger.info(f"Starting run thermal reading fff workflow")
+
     if not check_reference_blob_exists(
         tag_id, inspection_description, installation_code
     ):
@@ -92,12 +95,15 @@ def run_thermal_reading_fff_workflow(
         )
         return
 
+    logger.info(f"Loading reference image and polygon")
     reference_image, reference_polygon = load_reference_fff_image_and_polygon(
         installation_code, tag_id, inspection_description
     )
 
+    logger.info(f"Loading source polygon")
     source_image_array = download_anonymized_fff_image(anonymized_blob_storage_location)
 
+    logger.info(f"Processing thermal fff image")
     max_temperature, _, annotated_image, _, _ = process_thermal_image_fff(
         reference_image,
         source_image_array,
@@ -107,7 +113,7 @@ def run_thermal_reading_fff_workflow(
     )
 
     logger.info(f"Created annotated thermal visualization")
-
+    logger.info("Uploading to visualized")
     upload_to_visualized(
         visualized_blob_storage_location,
         annotated_image,
