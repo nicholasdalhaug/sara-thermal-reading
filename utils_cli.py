@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import typer
 
 from sara_thermal_reading.dev_utils.create_reference_polygon import (
@@ -8,7 +9,11 @@ from sara_thermal_reading.dev_utils.create_reference_polygon import (
 from sara_thermal_reading.dev_utils.run_fff_workflow_local_files import (
     run_fff_workflow_local_files,
 )
-from sara_thermal_reading.visualization.plotting import plot_fff_from_path
+from sara_thermal_reading.file_io.file_utils import load_reference_fff_image_and_polygon
+from sara_thermal_reading.visualization.plotting import (
+    plot_fff_from_path,
+    plot_thermal_image,
+)
 
 app = typer.Typer()
 
@@ -44,6 +49,24 @@ def plot_fff(
     ),
 ) -> None:
     plot_fff_from_path(file_path, polygon_json_path)
+
+
+@app.command()
+def plot_current_reference_image_and_polygon(
+    installation_code: str = typer.Option(..., help="Installation code"),
+    tag_id: str = typer.Option(..., help="Tag ID"),
+    inspection_description: str = typer.Option(..., help="Inspection description"),
+) -> None:
+    image, polygon_points = load_reference_fff_image_and_polygon(
+        installation_code, tag_id, inspection_description
+    )
+
+    plot_thermal_image(
+        image,
+        f"Reference Image: {installation_code}/{tag_id}_{inspection_description}",
+        polygon_points,
+    )
+    plt.show()
 
 
 @app.command()

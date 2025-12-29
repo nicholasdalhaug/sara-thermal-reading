@@ -54,10 +54,15 @@ python utils_cli.py create-polygon path/to/image.fff
 
 Will by default save to `reference_polygon.json` in the current directory
 
-### Plot reference polygon
+### Plot reference polygon local files
 
 ```bash
 python utils_cli.py plot-fff path/to/image.fff --polygon-json-path path/to/reference_polygon.json
 ```
 
+### Plot cloud reference polygon
 
+```bash
+python utils_cli.py plot-current-reference-image-and-polygon \
+    --installation-code "hua" --tag-id testtag --inspection-description testdesc
+```

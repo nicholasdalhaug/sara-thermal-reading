@@ -12,11 +12,11 @@ from sara_thermal_reading.file_io.fff_loader import load_fff_from_bytes
 def plot_thermal_image(
     image: np.ndarray,
     title: str,
-    polygon_points: Optional[List[List[int]]] = None,
+    polygon_points: Optional[list[tuple[int, int]]] = None,
     ax: Optional[Axes] = None,
 ) -> None:
     if ax is None:
-        fig, ax = plt.subplots(figsize=(10, 8))
+        _, ax = plt.subplots(figsize=(10, 8))
 
     im = ax.imshow(image, cmap="jet")
     plt.colorbar(im, ax=ax, label="Temperature")
