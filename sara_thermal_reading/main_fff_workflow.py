@@ -95,7 +95,7 @@ def run_thermal_reading_fff_workflow(
         tag_id, inspection_description, installation_code
     ):
         logger.error(
-            f"Expecting reference image to exist on storage account {settings.REFERENCE_STORAGE_ACCOUNT} for tagId {tag_id} and inspectionDescription {inspection_description} on installationCode {installation_code}"
+            f"Expecting reference image to exist on storage account {installation_code} for tagId {tag_id} and inspectionDescription {inspection_description}"
         )
         return
 

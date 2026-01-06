@@ -19,7 +19,7 @@ pip-compile --output-file=requirements.txt pyproject.toml --upgrade
 ### Setup
 
 For the thermal reading to run, we need a reference image and reference polygon located in a blob store.
-Both the image and polygon needs to be stored in a container named `installation_code` and a folder named `tagId_inspectionDescription`. For an example see the saradev, thermalreadingrefdev storage account.
+Both the image and polygon needs to be stored in a container named `installation_code` and a folder named `tagId_inspectionDescription`. For an example see the saradev, saradevthermalref storage account.
 
 ### Install locally
 
@@ -32,15 +32,11 @@ Can be tested by running `python ./example_thermal_reading.py` with the paramete
 ### Example .env.example
 
 ```bash
-SOURCE_STORAGE_ACCOUNT=storageanon1dev
 SOURCE_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=ht ...
-DESTINATION_STORAGE_ACCOUNT=storagevis1dev
 DESTINATION_STORAGE_CONNECTION_STRING=DefaultEndpointsProtocol=ht ...
-REFERENCE_STORAGE_ACCOUNT=thermalreadingrefdev
 REFERENCE_STORAGE_CONNECTION_STRING=ht ...
 
 ```
-
 
 ## Dev utils
 
