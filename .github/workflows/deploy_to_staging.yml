@@ -24,7 +24,6 @@ jobs:
     secrets:
       RegistryUsername: ${{ secrets.ROBOTICS_AURORAPRODACR_USERNAME }}
       RegistryPassword: ${{ secrets.ROBOTICS_AURORAPRODACR_PASSWORD }}
-      UPLOAD_STORAGE_CONNECTION_STRING: ${{ secrets.UPLOAD_STORAGE_CONNECTION_STRING }}
 
   deploy:
     name: Update deployment in Staging
