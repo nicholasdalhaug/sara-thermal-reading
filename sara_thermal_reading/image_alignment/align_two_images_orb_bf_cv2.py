@@ -101,7 +101,7 @@ def align_two_images_orb_bf_cv2(
 
     # Check if homography is reasonable (not too distorted)
     try:
-        det = np.linalg.det(H[:2, :2])
+        det = np.linalg.det(cast(NDArray[np.float64], H[:2, :2]))
         if abs(det) < 0.1 or abs(det) > 10:
             logger.warning(f"Homography appears distorted (determinant: {det:.3f})")
     except:
