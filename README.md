@@ -25,10 +25,6 @@ Both the image and polygon needs to be stored in a container named `installation
 
 Install with `pip install -r requirements.txt -e .[dev]`
 
-### Example: Run locally
-
-Can be tested by running `python ./example_thermal_reading.py` with the parameters for source and reference correctly set in you .env file. See .env.exampel for which values should be set. Destination storage account is not used in `example_thermal_reading.py`, files are just stored locally to a "results" folder.
-
 ### Example .env.example
 
 ```bash
@@ -61,4 +57,10 @@ python utils_cli.py plot-fff path/to/image.fff --polygon-json-path path/to/refer
 ```bash
 python utils_cli.py plot-current-reference-image-and-polygon \
     --installation-code "hua" --tag-id testtag --inspection-description testdesc
+```
+
+### Run local fff workflow with example data
+
+```bash
+python utils_cli.py run-fff-workflow --polygon-path example-data/polygon.json --reference-image-path example-data/thermal_image.fff
 ```
