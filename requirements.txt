@@ -125,7 +125,7 @@ pillow==12.1.0
     #   flirpy
     #   matplotlib
     #   sara-thermal-reading (pyproject.toml)
-pkg-about==2.0.9
+pkg-about==2.0.11
     # via
     #   libusb
     #   py-utlx
@@ -135,7 +135,7 @@ protobuf==6.33.4
     #   opentelemetry-proto
 psutil==7.2.1
     # via flirpy
-py-utlx==2.0.2
+py-utlx==2.0.5
     # via libusb
 pycparser==2.23
     # via cffi
