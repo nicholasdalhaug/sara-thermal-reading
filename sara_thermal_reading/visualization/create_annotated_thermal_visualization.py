@@ -277,7 +277,7 @@ def create_annotated_thermal_visualization(
 
     # Add colorbar if requested
     if show_colorbar and thermal_data is not None:
-        return _create_colorbar(annotated_image, thermal_data, scale_factor)
+        annotated_image = _create_colorbar(annotated_image, thermal_data, scale_factor)
 
     if len(annotated_image.shape) == 3 and annotated_image.shape[2] == 3:
         annotated_image = cast(
