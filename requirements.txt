@@ -57,7 +57,7 @@ isodate==0.7.2
     #   azure-storage-blob
 kiwisolver==1.4.9
     # via matplotlib
-libusb==1.0.29.post1
+libusb==1.0.29.post3
     # via flirpy
 markdown-it-py==4.0.0
     # via rich
