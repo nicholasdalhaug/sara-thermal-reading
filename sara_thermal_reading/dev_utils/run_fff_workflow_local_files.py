@@ -38,20 +38,13 @@ def run_fff_workflow_local_files(
         source_title = "Source Image (Generated/Warped)"
 
     (
-        max_temperature,
-        max_temp_location,
+        temperature,
         annotated_image,
         warped_polygon,
         warped_reference_img,
-    ) = process_thermal_image_fff(
-        reference_image,
-        source_image,
-        polygon_points,
-        tag_id,
-        inspection_description,
-    )
+    ) = process_thermal_image_fff(reference_image, source_image, polygon_points)
 
-    print(f"Workflow complete. Max Temperature: {max_temperature}")
+    print(f"Workflow complete. Temperature: {temperature:.2f}°C")
 
     fig, axes = plt.subplots(2, 2, figsize=(12, 12))
     axes = axes.flatten()
@@ -82,10 +75,8 @@ def run_fff_workflow_local_files(
         linewidth=2,
     )
 
-    annotated_image_rgb = cv2.cvtColor(annotated_image, cv2.COLOR_BGR2RGB)
-
-    axes[3].imshow(annotated_image_rgb)
-    axes[3].set_title(f"Result (Max Temp: {max_temperature:.1f})")
+    axes[3].imshow(annotated_image)
+    axes[3].set_title(f"Result (Temperature: {temperature:.2f})")
     axes[3].axis("off")
 
     plt.tight_layout()

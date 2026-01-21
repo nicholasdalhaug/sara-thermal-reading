@@ -20,8 +20,8 @@ from sara_thermal_reading.image_alignment.align_two_images_orb_bf_cv2 import (
 from sara_thermal_reading.image_processing.convert_thermal_to_uint8 import (
     convert_thermal_to_uint8,
 )
-from sara_thermal_reading.image_processing.find_max_temperature_in_polygon_raw_thermal import (
-    find_max_temperature_in_polygon_raw_thermal,
+from sara_thermal_reading.image_processing.find_temperature_in_polygon import (
+    find_temperature_in_polygon,
 )
 from sara_thermal_reading.visualization.create_annotated_thermal_visualization import (
     create_annotated_thermal_visualization,
@@ -32,11 +32,8 @@ def process_thermal_image_fff(
     reference_image: NDArray[np.float64],
     source_image_array: NDArray[np.float64],
     reference_polygon: list[tuple[int, int]],
-    tag_id: str,
-    inspection_description: str,
 ) -> tuple[
     float,
-    tuple[int, int],
     NDArray[np.uint8],
     list[tuple[int, int]],
     NDArray[np.uint8],
@@ -50,31 +47,18 @@ def process_thermal_image_fff(
         source_image_uint8,
         reference_polygon,
     )
+    warped_polygon_array = np.array(warped_polygon_list)
 
-    # Convert list of tuples back to numpy array for processing functions
-    warped_polygon_array = np.array(warped_polygon_list, dtype=np.float32)
+    temperature = find_temperature_in_polygon(source_image_array, warped_polygon_array)
 
-    max_temperature, max_temp_location = find_max_temperature_in_polygon_raw_thermal(
-        source_image_array, warped_polygon_array
-    )
-
-    logger.info(
-        f"Maximum temperature found: {max_temperature} at location {max_temp_location}"
-    )
+    logger.info(f"Temperature inside the polygon: {temperature}.")
 
     annotated_image = create_annotated_thermal_visualization(
-        source_image_uint8,
-        warped_polygon_array,
-        max_temperature,
-        max_temp_location,
-        tag_id,
-        inspection_description,
-        thermal_data=source_image_array,
+        source_image_array, warped_polygon_array, temperature
     )
 
     return (
-        max_temperature,
-        max_temp_location,
+        temperature,
         annotated_image,
         warped_polygon_list,
         warped_reference_img,
@@ -109,12 +93,8 @@ def run_thermal_reading_fff_workflow(
     source_image_array = download_anonymized_fff_image(anonymized_blob_storage_location)
 
     logger.info(f"Processing thermal fff image")
-    max_temperature, _, annotated_image, _, _ = process_thermal_image_fff(
-        reference_image,
-        source_image_array,
-        reference_polygon,
-        tag_id,
-        inspection_description,
+    temperature, annotated_image, _, _ = process_thermal_image_fff(
+        reference_image, source_image_array, reference_polygon
     )
 
     logger.info(f"Created annotated thermal visualization")
@@ -125,7 +105,5 @@ def run_thermal_reading_fff_workflow(
     )
 
     with open(temperature_output_file, "w") as file:
-        file.write(str(max_temperature))
-        logger.info(
-            f"Max temperature: {max_temperature} written to {temperature_output_file}"
-        )
+        file.write(str(temperature))
+        logger.info(f"Temperature: {temperature} written to {temperature_output_file}")
