@@ -11,6 +11,6 @@ def find_temperature_in_polygon(
     cv2.fillPoly(mask, [polygon_points], (1,))
     mask = mask.astype(bool)
 
-    median = np.median(thermal_image[mask]).astype(float)
+    max_temp = np.max(thermal_image[mask]).astype(float)
 
-    return median
+    return max_temp

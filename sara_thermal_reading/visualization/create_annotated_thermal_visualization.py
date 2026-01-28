@@ -26,7 +26,7 @@ def create_annotated_thermal_visualization(
         fill=None,
         edgecolor="gray",
         linewidth=2,
-        label=f"Median temperature: {tempreature:.2f}°C",
+        label=f"Max temperature: {tempreature:.2f}°C",
     )
     ax.add_patch(patch)
     ax.legend(handles=[patch])
