@@ -4,14 +4,16 @@
 #
 #    pip-compile --output-file=requirements.txt pyproject.toml
 #
+annotated-doc==0.0.4
+    # via typer
 annotated-types==0.7.0
     # via pydantic
-azure-core==1.38.0
+azure-core==1.38.2
     # via
     #   azure-identity
     #   azure-keyvault-secrets
     #   azure-storage-blob
-azure-identity==1.25.1
+azure-identity==1.25.2
     # via sara-thermal-reading (pyproject.toml)
 azure-keyvault-secrets==4.10.0
     # via sara-thermal-reading (pyproject.toml)
@@ -31,7 +33,7 @@ click==8.3.1
     # via typer
 contourpy==1.3.3
     # via matplotlib
-cryptography==46.0.4
+cryptography==46.0.5
     # via
     #   azure-identity
     #   azure-storage-blob
@@ -47,7 +49,7 @@ googleapis-common-protos==1.72.0
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
-grpcio==1.76.0
+grpcio==1.78.1
     # via opentelemetry-exporter-otlp-proto-grpc
 idna==3.11
     # via requests
@@ -59,7 +61,7 @@ isodate==0.7.2
     #   azure-storage-blob
 kiwisolver==1.4.9
     # via matplotlib
-libusb==1.0.29.post6
+libusb==1.0.29.post7
     # via flirpy
 markdown-it-py==4.0.0
     # via rich
@@ -75,7 +77,7 @@ msal-extensions==1.3.1
     # via azure-identity
 natsort==8.4.0
     # via flirpy
-numpy==2.4.1
+numpy==2.4.2
     # via
     #   contourpy
     #   flirpy
@@ -83,9 +85,9 @@ numpy==2.4.1
     #   opencv-python
     #   opencv-python-headless
     #   sara-thermal-reading (pyproject.toml)
-opencv-python==4.13.0.90
+opencv-python==4.13.0.92
     # via sara-thermal-reading (pyproject.toml)
-opencv-python-headless==4.13.0.90
+opencv-python-headless==4.13.0.92
     # via flirpy
 opentelemetry-api==1.39.1
     # via
@@ -123,12 +125,12 @@ packaging==26.0
     #   pkg-about
 pathlib==1.0.1
     # via sara-thermal-reading (pyproject.toml)
-pillow==12.1.0
+pillow==12.1.1
     # via
     #   flirpy
     #   matplotlib
     #   sara-thermal-reading (pyproject.toml)
-pkg-about==2.1.2
+pkg-about==2.2.0
     # via
     #   libusb
     #   py-utlx
@@ -138,7 +140,7 @@ protobuf==6.33.5
     #   opentelemetry-proto
 psutil==7.2.2
     # via flirpy
-py-utlx==2.1.1
+py-utlx==2.2.0
     # via libusb
 pycparser==3.0
     # via cffi
@@ -148,13 +150,13 @@ pydantic==2.12.5
     #   sara-thermal-reading (pyproject.toml)
 pydantic-core==2.41.5
     # via pydantic
-pydantic-settings==2.12.0
+pydantic-settings==2.13.1
     # via sara-thermal-reading (pyproject.toml)
 pyftdi==0.57.1
     # via flirpy
 pygments==2.19.2
     # via rich
-pyjwt[crypto]==2.10.1
+pyjwt[crypto]==2.11.0
     # via
     #   msal
     #   pyjwt
@@ -183,15 +185,15 @@ requests==2.32.5
     #   azure-core
     #   msal
     #   opentelemetry-exporter-otlp-proto-http
-rich==14.3.1
+rich==14.3.3
     # via typer
 shellingham==1.5.4
     # via typer
 six==1.17.0
     # via python-dateutil
-tqdm==4.67.1
+tqdm==4.67.3
     # via flirpy
-typer==0.21.1
+typer==0.24.0
     # via sara-thermal-reading (pyproject.toml)
 typing-extensions==4.15.0
     # via
@@ -210,7 +212,6 @@ typing-extensions==4.15.0
     #   py-utlx
     #   pydantic
     #   pydantic-core
-    #   typer
     #   typing-inspection
 typing-inspection==0.4.2
     # via
